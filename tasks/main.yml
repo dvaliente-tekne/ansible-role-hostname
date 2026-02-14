@@ -4,7 +4,7 @@
 
 - name: Check if hostname is already cached
   ansible.builtin.set_fact:
-    _hostname_cached: "{{ ansible_facts['cached_hostname'] is defined }}"
+    _hostname_cached: "{{ 'cached_hostname' in ansible_facts }}"
   tags:
     - hostname
     - always
@@ -27,7 +27,7 @@
 
 - name: Set hostname variable for convenience
   ansible.builtin.set_fact:
-    hostname: "{{ ansible_facts['cached_hostname'] }}"
+    hostname: "{{ ansible_facts.get('cached_hostname', ansible_hostname) }}"
   tags:
     - hostname
     - always
