@@ -2,12 +2,13 @@
 
 Captures the hostname from `/etc/hostname` on the remote host and caches it as a persistent fact for use by other roles.
 
-## How It Works
+## What It Does
 
-1. Checks if `cached_hostname` fact already exists
-2. If not cached, reads `/etc/hostname` from the remote host
-3. Stores as a **cacheable fact** that persists across plays
-4. Sets `hostname` variable for convenient access
+1. **Checks** if `cached_hostname` is already in `ansible_facts` (e.g. from fact cache or a previous play).
+2. **If not cached:** reads `/etc/hostname` via `slurp`, then sets `cached_hostname` (cacheable fact) from the file contents (trimmed).
+3. **Sets** `hostname` to `cached_hostname` or falls back to `ansible_hostname` for convenience.
+
+Use this role when other roles need a stable hostname that matches `/etc/hostname` (e.g. for host-specific package or config choices). With fact caching enabled, `cached_hostname` persists across plays.
 
 ## Requirements
 
